@@ -1,0 +1,162 @@
+<!-- School Feedback Platform Frontend -->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Feedback Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 School Feedback Platform</h1>
+            <nav>
+                <button id="homeBtn" class="nav-btn active">Home</button>
+                <button id="loginBtn" class="nav-btn">Staff Login</button>
+                <button id="dashboardBtn" class="nav-btn" style="display: none;">Dashboard</button>
+                <button id="logoutBtn" class="nav-btn" style="display: none;">Uitloggen</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Home Section -->
+            <section id="homeSection" class="section active">
+                <div class="hero">
+                    <h2>Deel je feedback over de IT-opleiding</h2>
+                    <p>Jouw mening helpt ons de kwaliteit van het onderwijs te verbeteren. Alle feedback is anoniem.</p>
+                </div>
+
+                <form id="feedbackForm" class="feedback-form">
+                    <div class="form-group">
+                        <label for="category">Categorie:</label>
+                        <select id="category" required>
+                            <option value="">Selecteer een categorie</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Vak:</label>
+                        <select id="subject" required>
+                            <option value="">Selecteer een vak</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedbackText">Jouw feedback:</label>
+                        <textarea 
+                            id="feedbackText" 
+                            placeholder="Deel hier je ervaringen, suggesties of opmerkingen..."
+                            required
+                            minlength="10"
+                            maxlength="1000"
+                        ></textarea>
+                        <small class="char-counter">0/1000 karakters</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-text">Feedback Versturen</span>
+                        <span class="btn-loading" style="display: none;">Versturen...</span>
+                    </button>
+                </form>
+
+                <div id="sentimentPreview" class="sentiment-preview" style="display: none;">
+                    <h3>Sentiment Analyse Preview:</h3>
+                    <div class="sentiment-result">
+                        <span class="sentiment-label"></span>
+                        <span class="sentiment-score"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Login Section -->
+            <section id="loginSection" class="section">
+                <div class="login-container">
+                    <h2>Staff Login</h2>
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="username">Gebruikersnaam:</label>
+                            <input type="text" id="username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Wachtwoord:</label>
+                            <input type="password" id="password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Inloggen</button>
+                    </form>
+
+                    <div class="demo-credentials">
+                        <h4>Demo Accounts:</h4>
+                        <p><strong>Admin:</strong> admin / Password123!</p>
+                        <p><strong>Docent:</strong> noor.jansen / Welkom123!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="section">
+                <div class="dashboard">
+                    <h2>Feedback Dashboard</h2>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>Totaal Feedback</h3>
+                            <span id="totalFeedback" class="stat-number">-</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Gemiddeld Sentiment</h3>
+                            <span id="avgSentiment" class="stat-number">-</span>
+                        </div>
+                        <div class="stat-card positive">
+                            <h3>Positief</h3>
+                            <span id="positiveFeedback" class="stat-number">-</span>
+                        </div>
+                        <div class="stat-card negative">
+                            <h3>Negatief</h3>
+                            <span id="negativeFeedback" class="stat-number">-</span>
+                        </div>
+                        <div class="stat-card neutral">
+                            <h3>Neutraal</h3>
+                            <span id="neutralFeedback" class="stat-number">-</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-filters">
+                        <select id="filterCategory">
+                            <option value="">Alle categorieën</option>
+                        </select>
+                        <select id="filterSubject">
+                            <option value="">Alle vakken</option>
+                        </select>
+                        <select id="filterSentiment">
+                            <option value="">Alle sentimenten</option>
+                            <option value="Positive">Positief</option>
+                            <option value="Negative">Negatief</option>
+                            <option value="Neutral">Neutraal</option>
+                        </select>
+                        <button id="applyFilters" class="btn btn-secondary">Filter Toepassen</button>
+                    </div>
+
+                    <div id="feedbackList" class="feedback-list">
+                        <!-- Feedback items will be loaded here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 School Feedback Platform. Alle feedback is anoniem en wordt gebruikt voor kwaliteitsverbetering.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="components.js"></script>
+    <script src="validation.js"></script>
+    <script src="auth-helpers.js"></script>
+    <script src="api-client.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
