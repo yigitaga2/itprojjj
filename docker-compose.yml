@@ -1,0 +1,39 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://sfp:sfp@db:5432/sfp
+      - SECRET_KEY=your-secret-key-here
+      - ADMIN_EMAIL=admin@school.com
+      - ADMIN_PASSWORD=Password123!
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15
+    container_name: sfp_db
+    environment:
+      - POSTGRES_USER=sfp
+      - POSTGRES_PASSWORD=sfp
+      - POSTGRES_DB=sfp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
