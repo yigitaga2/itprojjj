@@ -41,9 +41,12 @@ POSITIVE_WORDS = [
 ]
 
 # Context modifiers - woorden die sentiment kunnen veranderen
-INTENSIFIERS = ['heel', 'zeer', 'erg', 'super', 'enorm', 'extreem', 'echt', 'hartstikke']
-DIMINISHERS = ['beetje', 'een beetje', 'iets', 'enigszins', 'redelijk', 'tamelijk']
+INTENSIFIERS = ['heel', 'zeer', 'erg', 'super', 'enorm', 'extreem', 'echt', 'hartstikke', 'ontzettend', 'verschrikkelijk', 'geweldig', 'fantastisch', 'buitengewoon', 'uitzonderlijk']
+DIMINISHERS = ['beetje', 'een beetje', 'iets', 'enigszins', 'redelijk', 'tamelijk', 'vrij', 'nogal', 'best', 'wel']
 NEGATORS = ['niet', 'geen', 'nooit', 'niemand', 'niets', 'nergens']
+
+# Nederlandse positieve uitroepen en bevestigingen
+POSITIVE_EXCLAMATIONS = ['ja!', 'top!', 'geweldig!', 'perfect!', 'prima!', 'mooi!', 'goed zo!', 'precies!', 'klopt!', 'helemaal goed!']
 
 def fuzzy_match(word: str, target_list: list, threshold: float = 0.8) -> tuple[bool, str]:
     """
@@ -132,6 +135,44 @@ def analyze_sentiment(text: str) -> tuple[str, float, float]:
         'goede leerkracht', 'goeie docent', 'goede docent', 'top docent',
         'prima leerkracht', 'uitstekende', 'knap', 'slim', 'vakkundig'
     ]
+
+    # NEDERLANDSE POSITIEVE PATRONEN
+    POSITIVE_PATTERNS = [
+        'heel goed', 'erg goed', 'zeer goed', 'super goed', 'ontzettend goed',
+        'heel leuk', 'erg leuk', 'zeer leuk', 'super leuk', 'ontzettend leuk',
+        'heel fijn', 'erg fijn', 'zeer fijn', 'super fijn', 'ontzettend fijn',
+        'heel duidelijk', 'erg duidelijk', 'zeer duidelijk', 'super duidelijk',
+        'heel interessant', 'erg interessant', 'zeer interessant', 'super interessant',
+        'heel nuttig', 'erg nuttig', 'zeer nuttig', 'super nuttig',
+        'heel handig', 'erg handig', 'zeer handig', 'super handig',
+        'heel behulpzaam', 'erg behulpzaam', 'zeer behulpzaam', 'super behulpzaam',
+        'heel gemotiveerd', 'erg gemotiveerd', 'zeer gemotiveerd', 'super gemotiveerd',
+        'heel enthousiast', 'erg enthousiast', 'zeer enthousiast', 'super enthousiast',
+        'heel betrokken', 'erg betrokken', 'zeer betrokken', 'super betrokken',
+        'heel geduldig', 'erg geduldig', 'zeer geduldig', 'super geduldig',
+        'heel creatief', 'erg creatief', 'zeer creatief', 'super creatief',
+        'heel professioneel', 'erg professioneel', 'zeer professioneel', 'super professioneel',
+        'goed uitgelegd', 'duidelijk uitgelegd', 'helder uitgelegd', 'prima uitgelegd',
+        'goed georganiseerd', 'prima georganiseerd', 'netjes georganiseerd',
+        'fijne leerkracht', 'aardige leerkracht', 'lieve leerkracht', 'vriendelijke leerkracht',
+        'fijne docent', 'aardige docent', 'lieve docent', 'vriendelijke docent',
+        'goede begeleiding', 'fijne begeleiding', 'prima begeleiding', 'uitstekende begeleiding',
+        'leuke lessen', 'interessante lessen', 'boeiende lessen', 'leerzame lessen',
+        'goed tempo', 'fijn tempo', 'prima tempo', 'geschikt tempo',
+        'duidelijke uitleg', 'heldere uitleg', 'goede uitleg', 'prima uitleg',
+        'nuttige feedback', 'goede feedback', 'constructieve feedback', 'waardevolle feedback',
+        'prettige sfeer', 'goede sfeer', 'fijne sfeer', 'ontspannen sfeer',
+        'goed bereikbaar', 'makkelijk bereikbaar', 'altijd bereikbaar',
+        'snel antwoord', 'snelle reactie', 'goede communicatie', 'duidelijke communicatie',
+        'ben tevreden', 'ben blij', 'vind het fijn', 'vind het leuk', 'vind het goed',
+        'ben positief', 'ben enthousiast', 'raad aan', 'beveel aan', 'zou aanraden',
+        'hou van', 'vind leuk', 'vind goed', 'vind fijn', 'vind interessant',
+        'goede ervaring', 'positieve ervaring', 'fijne ervaring', 'leuke ervaring',
+        'tevreden over', 'blij met', 'content met', 'happy met', 'dankbaar voor',
+        'waardeer het', 'stel op prijs', 'ben dankbaar', 'appreciate',
+        'goed gedaan', 'knap gedaan', 'mooi gedaan', 'prima gedaan', 'netjes gedaan',
+        'chapeau', 'petje af', 'respect', 'waardering', 'complimenten'
+    ]
     
     # EERST: CHECK VOOR NEGATION NEGATIVE - "niet goed" = NEGATIEF
     for negation_neg in NEGATION_NEGATIVE:
@@ -171,10 +212,22 @@ def analyze_sentiment(text: str) -> tuple[str, float, float]:
                 print(f"NEGATIVE TRIGGER FOUND (SPELLING): '{variant}' -> '{correct_trigger}'")
                 return "Negative", -0.8, 0.9
     
-    # CHECK FOR IMMEDIATE POSITIVE TRIGGERS  
+    # CHECK FOR IMMEDIATE POSITIVE TRIGGERS
     for trigger in SUPER_POSITIVE_TRIGGERS:
         if trigger in text_lower:
             print(f"POSITIVE TRIGGER FOUND (EXACT): '{trigger}'")
+            return "Positive", 0.8, 0.9
+
+    # CHECK FOR POSITIVE PATTERNS
+    for pattern in POSITIVE_PATTERNS:
+        if pattern in text_lower:
+            print(f"POSITIVE PATTERN FOUND: '{pattern}'")
+            return "Positive", 0.7, 0.8
+
+    # CHECK FOR POSITIVE EXCLAMATIONS
+    for exclamation in POSITIVE_EXCLAMATIONS:
+        if exclamation in text_lower:
+            print(f"POSITIVE EXCLAMATION FOUND: '{exclamation}'")
             return "Positive", 0.8, 0.9
     
     # SPECIAL PATTERNS - SUBTLE NEGATIVITY + CONSTRUCTIEVE KRITIEK
@@ -261,10 +314,16 @@ def analyze_sentiment(text: str) -> tuple[str, float, float]:
                 negative_count += 2
                 print(f"STRONG NEGATIVE WORD (FUZZY): '{clean_word}' -> '{matched_word}'")
         
-        # POSITIVE WORDS (EXACT MATCH)
+        # POSITIVE WORDS (EXACT MATCH) - met intensifier check
         if clean_word in ['geweldig', 'fantastisch', 'super', 'perfect', 'excellent', 'goed', 'goeie', 'goede', 'leuk', 'mooi', 'fijn', 'top', 'prima', 'uitstekend', 'knap', 'slim', 'vakkundig', 'professioneel', 'gemotiveerd', 'enthousiast', 'energiek', 'actief', 'betrokken', 'toegewijd', 'gedreven', 'zorgzaam', 'geduldig', 'ondersteunend', 'creatief', 'flexibel', 'betrouwbaar', 'punctueel', 'georganiseerd', 'gestructureerd', 'efficiënt']:
-            positive_count += 1
-            print(f"POSITIVE WORD: '{clean_word}'")
+            # Check for intensifier before this word
+            intensifier_boost = 0
+            if i > 0 and words[i-1].strip('.,!?;:"()[]{}') in ['heel', 'zeer', 'erg', 'super', 'ontzettend', 'hartstikke']:
+                intensifier_boost = 1
+                print(f"INTENSIFIER FOUND: '{words[i-1]} {clean_word}' - EXTRA BOOST")
+
+            positive_count += 1 + intensifier_boost
+            print(f"POSITIVE WORD: '{clean_word}' (boost: {intensifier_boost})")
 
     print(f"NEGATIVE COUNT: {negative_count}, POSITIVE COUNT: {positive_count}")
     
