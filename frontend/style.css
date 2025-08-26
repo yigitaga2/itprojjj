@@ -337,6 +337,12 @@ main {
     color: #718096;
 }
 
+.feedback-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .sentiment-badge {
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
@@ -363,6 +369,33 @@ main {
 .feedback-text {
     color: #4a5568;
     line-height: 1.6;
+}
+
+/* Delete Button */
+.btn-delete {
+    background: #f56565;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.btn-delete:hover {
+    background: #e53e3e;
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.btn-delete:active {
+    transform: scale(0.95);
 }
 
 /* Sentiment Preview */
@@ -463,6 +496,17 @@ footer {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
     }
 }
 

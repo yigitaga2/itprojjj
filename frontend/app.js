@@ -347,19 +347,25 @@ async function loadFeedbackData() {
 
 function displayFeedbackList(feedbackList) {
     const container = document.getElementById('feedbackList');
-    
+
     if (feedbackList.length === 0) {
         container.innerHTML = '<p style="text-align: center; color: #718096;">Geen feedback gevonden met de huidige filters.</p>';
         return;
     }
-    
+
+    // Check if current user is admin
+    const isAdmin = currentUser && currentUser.role === 'admin';
+
     container.innerHTML = feedbackList.map(feedback => `
-        <div class="feedback-item ${feedback.sentiment_label.toLowerCase()}">
+        <div class="feedback-item ${feedback.sentiment_label.toLowerCase()}" data-feedback-id="${feedback.id}">
             <div class="feedback-meta">
                 <span>${feedback.category} - ${feedback.subject}</span>
-                <span class="sentiment-badge ${feedback.sentiment_label.toLowerCase()}">
-                    ${feedback.sentiment_label} (${(feedback.sentiment_score || 0).toFixed(2)})
-                </span>
+                <div class="feedback-actions">
+                    <span class="sentiment-badge ${feedback.sentiment_label.toLowerCase()}">
+                        ${feedback.sentiment_label} (${(feedback.sentiment_score || 0).toFixed(2)})
+                    </span>
+                    ${isAdmin ? `<button class="btn-delete" onclick="deleteFeedback(${feedback.id})" title="Verwijder feedback">🗑️</button>` : ''}
+                </div>
             </div>
             <div class="feedback-text">${feedback.text}</div>
             <div style="font-size: 0.75rem; color: #a0aec0; margin-top: 0.5rem;">
@@ -406,6 +412,52 @@ function showToast(message, type = 'info') {
         UIComponents.showToast(message, type);
     } else {
         alert(message);
+    }
+}
+
+// Delete feedback function
+async function deleteFeedback(feedbackId) {
+    if (!authToken || !currentUser || currentUser.role !== 'admin') {
+        showToast('Alleen admins kunnen feedback verwijderen', 'error');
+        return;
+    }
+
+    // Show confirmation modal
+    const confirmed = confirm('Weet je zeker dat je deze feedback wilt verwijderen? Dit kan niet ongedaan worden gemaakt.');
+    if (!confirmed) return;
+
+    try {
+        const response = await fetch(`http://localhost:8000/feedback/${feedbackId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (response.ok) {
+            showToast('Feedback succesvol verwijderd', 'success');
+
+            // Remove from DOM immediately
+            const feedbackElement = document.querySelector(`[data-feedback-id="${feedbackId}"]`);
+            if (feedbackElement) {
+                feedbackElement.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    feedbackElement.remove();
+                }, 300);
+            }
+
+            // Reload dashboard data to update stats
+            setTimeout(() => {
+                loadDashboardData();
+            }, 500);
+
+        } else {
+            const error = await response.json();
+            throw new Error(error.detail || 'Fout bij verwijderen van feedback');
+        }
+    } catch (error) {
+        console.error('Error deleting feedback:', error);
+        showToast('Fout bij verwijderen van feedback: ' + error.message, 'error');
     }
 }
 
