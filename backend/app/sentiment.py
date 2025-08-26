@@ -79,8 +79,8 @@ def analyze_sentiment(text: str) -> tuple[str, float, float]:
     """
     text_lower = text.lower().strip()
     
-    print(f"ANALYZING: '{text}'")
-    
+    print(f"\n=== ANALYZING: '{text}' ===")
+
     # DIRECT NEGATIVE DETECTION - INCLUSIEF SUBTIELE KRITIEK
     SUPER_NEGATIVE_TRIGGERS = [
         'racist', 'racistisch', 'kk', 'kanker', 'kut', 'shit', 'klote',
