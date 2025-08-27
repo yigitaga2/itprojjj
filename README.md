@@ -2,7 +2,7 @@
 
 Een anoniem feedback platform voor scholen waar studenten feedback kunnen geven en docenten/administrators deze kunnen bekijken en analyseren.
 
-## ✨ Functies
+##  Functies
 
 ### Voor Studenten
 - **Anonieme feedback**: Geen account nodig, volledige privacy
@@ -18,7 +18,7 @@ Een anoniem feedback platform voor scholen waar studenten feedback kunnen geven 
 - **Moderatie**: Admin kan ongepaste feedback verwijderen
 - **Real-time**: Direct inzicht in nieuwe feedback
 
-## 🚀 Snelle Start
+##  Snelle Start
 
 ### Vereisten
 - Docker & Docker Compose
@@ -64,7 +64,7 @@ docker-compose up -d
 - mevr.koster / Welkom123!
 - dhr.vandijk / Welkom123!
 
-## 🛠️ Ontwikkeling
+## Ontwikkeling
 
 ### Lokale Development
 
@@ -123,7 +123,7 @@ itprojbund/
 **Feedback** (Feedback)
 - id, text, category, subject_area, sentiment_label, sentiment_score, confidence_score, word_count, is_active, created_at
 
-## 🧪 Testing
+##  Testing
 
 ### Automatische Tests
 
@@ -164,7 +164,7 @@ curl -X POST http://localhost:8000/auth/login \
   -d '{"username":"admin","password":"Password123!"}'
 ```
 
-## 📊 API Documentatie
+##  API Documentatie
 
 ### Publieke Endpoints
 
@@ -222,7 +222,7 @@ POSITIVE_THRESHOLD=0.1
 NEGATIVE_THRESHOLD=-0.1
 ```
 
-## 🎯 Gebruik
+##  Gebruik
 
 ### Voor Studenten
 
@@ -249,7 +249,7 @@ NEGATIVE_THRESHOLD=-0.1
 4. Kan feedback verwijderen
 5. Kan nieuwe accounts aanmaken
 
-## 🔒 Privacy & Beveiliging
+##  Privacy & Beveiliging
 
 - **Anonieme feedback**: Geen IP-adressen of identificeerbare informatie opgeslagen
 - **JWT authenticatie**: Veilige token-based auth voor docenten/admin
@@ -258,7 +258,7 @@ NEGATIVE_THRESHOLD=-0.1
 - **CORS configuratie**: Controleerbare cross-origin requests
 - **Input validatie**: Alle input wordt gevalideerd en gesanitized
 
-## 🚨 Troubleshooting
+ Troubleshooting
 
 ### Veelvoorkomende Problemen
 
@@ -309,7 +309,7 @@ make clean
 make up
 ```
 
-## 📈 Roadmap
+##  Roadmap
 
 - [ ] Email notificaties voor nieuwe feedback
 - [ ] Export functionaliteit (CSV/PDF)
@@ -318,30 +318,9 @@ make up
 - [ ] Mobile app
 - [ ] Integration met school systemen
 
-## 🤝 Bijdragen
+##  Licentie
 
-1. Fork het project
-2. Maak een feature branch (`git checkout -b feature/nieuwe-functie`)
-3. Commit je changes (`git commit -am 'Voeg nieuwe functie toe'`)
-4. Push naar de branch (`git push origin feature/nieuwe-functie`)
-5. Maak een Pull Request
+Dit project is gemaakt voor educatieve doeleinden.(erasmushogeschool brussel)
 
-## 📄 Licentie
 
-Dit project is gemaakt voor educatieve doeleinden.
-
-## 👥 Team
-
-Ontwikkeld als schoolproject voor anonieme feedback verzameling.
-
----
-
-Voor vragen of problemen, maak een issue aan in de repository.
-
-## 📝 Changelog
-
-### v1.1.0 - Sentiment Analysis Improvements
-- Verbeterde Nederlandse sentiment analyse
-- Ondersteuning voor constructieve kritiek detectie
-- Gefixte negatie logica voor "niet + negatief woord" patronen
-- Toegevoegde fuzzy matching voor schrijffouten
+##  Changelog
